@@ -14,20 +14,19 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./data/cars.csv', 
 });
 
 const regression = new LogisticRegression(features, labels, {
-    learningRate: 0.01,
+    learningRate: 0.05,
     iterations: 20,
-    batchSize: 10
+    batchSize: 10,
+    decisionBoundary: 0.6,
 });
 
 regression.train();
-const r2 = regression.test(testFeatures, testLabels);
+const accuracy = regression.test(testFeatures, testLabels);
+
+console.log(accuracy)
 
 plot({
-    x: regression.mseHistory.reverse(),
+    x: regression.costHistory.reverse(),
     xLabel: 'Iteration #',
-    yLabel: 'Mean Squared Error'
+    yLabel: 'Cost'
 });
-
-console.log('R2 is', r2);
-
-regression.predict([[120, 2, 380]]).print();
